@@ -29,13 +29,16 @@ function cat(path){
     });
 }
 
-
-const arg = process.argv[2];
-const path = process.argv[3];
-if (arg === 'file'){
-    cat(path);
-}else if (arg === 'url'){
-    webCat(path);
-}else{
-    console.log('Invalid commands '+arg);
+function main(){
+    const arg = process.argv[2];
+    const path = process.argv[3];
+    if (arg === 'file'){
+        cat(path);
+    }else if (arg === 'url'){
+        webCat(path);
+    }else{
+        console.log('Invalid commands '+arg);
+    }
 }
+
+module.exports={webCat, cat, handleOutput, main}
