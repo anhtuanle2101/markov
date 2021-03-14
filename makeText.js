@@ -8,7 +8,7 @@ function handleOutput(data){
     console.log(mm.makeText());
 }
 
-function webCat(url){
+async function webCat(url){
     axios.get(url)
     .then(res=>{
         handleOutput(res.data);
@@ -19,7 +19,7 @@ function webCat(url){
     })
 }
 
-function cat(path){
+async function cat(path){
     fs.readFile(path, 'utf8', function(err, data){
         if (err){
             console.log('ERROR READING: '+path+' \n'+err);
