@@ -32,6 +32,7 @@ async function cat(path){
 function main(){
     const arg = process.argv[2];
     const path = process.argv[3];
+    console.log(arg, path);
     if (arg === 'file'){
         cat(path);
     }else if (arg === 'url'){
@@ -40,5 +41,7 @@ function main(){
         console.log('Invalid commands '+arg);
     }
 }
+
+main();
 
 module.exports={webCat, cat, handleOutput, main}

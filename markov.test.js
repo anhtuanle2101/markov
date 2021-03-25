@@ -19,4 +19,4 @@ describe('Class methods testing', function(){
         expect(text.length).toBeLessThan(100);
         expect(text).toEqual(expect.any(String));
     })
-})
+});

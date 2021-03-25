@@ -20,13 +20,14 @@ class MarkovMachine {
     // TODO
     this.chain = {};
     for (let i=0; i<this.words.length; i++){
-      if (!this.chain[this.words[i]]){
-        this.chain[this.words[i]]=[];
-      }
-      if (this.words[i+1]){
-        this.chain[this.words[i]].push(this.words[i+1]);
-      }else{
-        this.chain[this.words[i]].push(null);
+      if (this.words[i-1] && this.words[i]){
+        if (this.words[i+1]){
+          this.chain[`${this.words[i-1]} ${this.words[i]}`] = (this.chain[`${this.words[i-1]} ${this.words[i]}`] || []);
+          this.chain[`${this.words[i-1]} ${this.words[i]}`].push(this.words[i+1]);
+        }else{
+          this.chain[`${this.words[i-1]} ${this.words[i]}`] = (this.chain[`${this.words[i-1]} ${this.words[i]}`] || []);
+          this.chain[`${this.words[i-1]} ${this.words[i]}`].push(null);
+        }
       }
     }
   }
@@ -36,14 +37,27 @@ class MarkovMachine {
     if (numWords<1){
       return '';
     }
-    const randomIndex = Math.floor(Math.random()*this.words.length);
-    let lastWord = this.words[randomIndex];
+    let randomIndex = Math.floor(Math.random()*Object.keys(this.chain).length);
+    let lastWord = Object.keys(this.chain)[randomIndex];
+    while (lastWord.charAt(0) !== lastWord.charAt(0).toUpperCase()){
+      randomIndex = Math.floor(Math.random()*Object.keys(this.chain).length);  
+      lastWord = Object.keys(this.chain)[randomIndex];
+    }
     let Text = lastWord;
     let count = 1;
     while (count<numWords){
-      let nextWords = this.chain[lastWord];
+      if (lastWord.charAt(lastWord.length-1)==='.'){
+        break;
+      }
+      count++;
+      let nextWords = Object.keys(this.chain).filter(word=>{
+        if (this.chain[lastWord].some(word2=>word.includes(word2))){
+          return word;
+        }
+      });
       let nextRandIdx = Math.floor(Math.random()*nextWords.length);
       let nextWord = nextWords[nextRandIdx];
+      
       if (nextWord){
         Text += ' '+nextWord;
         lastWord = nextWord;
